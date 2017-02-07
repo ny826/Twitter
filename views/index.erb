@@ -1,0 +1,132 @@
+
+<% if user%>
+<div class="login">
+<h1><%= "Hi , #{user.name}" %></h1>
+<form action="add_task" method="post">
+    <input class="field" type="text area" name="add_task" placeholder="Tweet"><br>
+    <input class="btw" type="submit" value="Tweet"> 
+</form>
+
+<form action="/logout" method="post">
+<input class="btw1" type="submit" value="logout">
+</form>
+</div>
+
+<form action="find" method="post"> 
+	<input type="text" name="email">
+	<input type="submit" name="submit" value="find">
+</form>
+<ul>
+<h1>Tweets </h1>
+<%task.each do |task|%>
+<%user_id=task.user_id%>
+<% puts "user id is : #{user_id}"%>
+<%s=Searate.all(:follower_id=>user_id,:followee_id=>session[:user_id]).first%>
+<%puts "searate is #{s}"%>
+<% if s%>
+ <li><%= task.content %></li>
+ <% if task.user_id==session[:user_id] %>
+ <form action="/update" method="post">
+ <input type="hidden" name="task_id" value="<%= task.id%>">
+ <input type="hidden" name="user_id" value="<%= task.user_id%>">
+ <input type="submit" name="submit" value="edit">
+</form>
+<% end -%>
+ <!--<% count=Countlike.all(:task_id=>task.id).first%>
+ <% if count %>
+ <%= count.count %>
+ <% end -%>-->
+<form action="/like" method="post">
+ <input type="hidden" name="user_id" value="<%= user.id%>">
+ <input type="hidden" name="task_id" value="<%= task.id%>">
+
+ <% count=Countlike.all(:task_id=>task.id).first%>
+ <% if count %>
+ <%= count.count %>
+ <% end -%>
+
+ <input type="submit" name="submit" value="like">
+ </form>
+
+<form action="/unlike" method="post">
+ <input type="hidden" name="user_id" value="<%= user.id%>">
+ <input type="hidden" name="task_id" value="<%= task.id%>">
+ <input type="submit" name="submit" value="unlike">
+ </form>
+
+ <% end -%>
+<%end%>
+</ul>
+<% end -%>
+
+<hr>
+
+<!-- <h1>User List</h1>
+<ol>
+<%user1.each do |user1|%>
+<li><%= user1.name%></li>
+<p><form action="/follow" method="post"> 
+<input type="hidden" name="follower_id" value="<%=user1.id%>">
+<input type="hidden" name="followee_id" value="<%=user.id%>">
+<input type="submit" name="submit" value="Follow">
+</form>
+<form action="/unfollow" method="post"> 
+<input type="hidden" name="follower_id" value="<%=user1.id%>">
+<input type="hidden" name="followee_id" value="<%=user.id%>">
+<input type="submit" name="submit" value="unFollow">
+</form></p>
+<% end -%>
+</ol> -->
+<!-- <hr>  -->
+<h1>Follower List</h1><ol>
+<% if searate%>
+<%searate.each do |searate|%>
+<%user=User.all(:id=>searate.follower_id).first%>
+<li><%= user.name%></li>
+<% end -%>
+<%end%>
+
+</ol>
+<% if follow%>
+<h1><%= "Total followers #{follow.count}"%></h1>
+<%end%>
+<style>
+body{
+    background-color: grey;
+}
+.login {
+width:500px;
+margin:auto;
+border:2px #CCC solid;
+padding:50px;
+background-color: #29363f;
+color:#FFF;
+text-align:center;
+}
+.field, .btn a{
+border:1px #525d65 solid;
+padding:10px;
+}
+.field {
+background: #29363f;
+margin:5px 25px;
+width:216px;
+color:#FFF;
+}
+.login h1,.login ,.btn,a{ color: #CCC; }
+
+.btn {
+background-color: #29363f;
+font-weight:bold;
+margin:10px 25px;
+width:238px;
+}
+.btn1 {
+background-color: #29363f;
+font-weight:bold;
+margin:50px 25px;
+width:238px;
+}
+
+
+</style>

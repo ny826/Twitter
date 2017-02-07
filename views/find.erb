@@ -1,0 +1,15 @@
+<% user.each do |user|%>
+<p> Name : <%= user.name%></p>
+<p>Email : <%= user.email%></p>
+
+<p><form action="/follow" method="post"> 
+<input type="hidden" name="follower_id" value="<%=user.id%>">
+<input type="hidden" name="followee_id" value="<%=session[:user_id]%>">
+<input type="submit" name="submit" value="Follow">
+</form>
+<form action="/unfollow" method="post"> 
+<input type="hidden" name="follower_id" value="<%=user.id%>">
+<input type="hidden" name="followee_id" value="<%=session[:user_id]%>">
+<input type="submit" name="submit" value="unFollow">
+</form></p>
+<% end -%>
