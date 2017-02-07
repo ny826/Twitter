@@ -1,15 +1,22 @@
 <% user.each do |user|%>
+
 <p> Name : <%= user.name%></p>
 <p>Email : <%= user.email%></p>
 
-<p><form action="/follow" method="post"> 
-<input type="hidden" name="follower_id" value="<%=user.id%>">
-<input type="hidden" name="followee_id" value="<%=session[:user_id]%>">
-<input type="submit" name="submit" value="Follow">
-</form>
+<% searate=Searate.all(:follower_id=>user.id,:followee_id=>session[:user_id]).first%>
+<% if searate%>
 <form action="/unfollow" method="post"> 
 <input type="hidden" name="follower_id" value="<%=user.id%>">
 <input type="hidden" name="followee_id" value="<%=session[:user_id]%>">
 <input type="submit" name="submit" value="unFollow">
-</form></p>
+</form>	
+<a href="/">Go Back</a>
+<%else%>
+<form action="/follow" method="post"> 
+<input type="hidden" name="follower_id" value="<%=user.id%>">
+<input type="hidden" name="followee_id" value="<%=session[:user_id]%>">
+<input type="submit" name="submit" value="Follow">
+</form>
+<a href="/">Go Back</a>
+<%end%>
 <% end -%>

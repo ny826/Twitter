@@ -150,6 +150,23 @@ task.user_id=session[:user_id]
 # task.dislike=false
 task.save
 #puts "task content is :#{task.content}"
+
+ searate=Searate.new
+ searate.followee_id=session[:user_id]
+ searate.follower_id =session[:user_id]
+ searate.save
+ follow =Follow.all(:user=>session[:user_id]).first
+ if follow
+ follow.count+=1
+  follow.save
+else
+follow=Follow.new
+follow.user=session[:user_id]
+follow.count=1;
+follow.save
+
+ end
+
 redirect '/'
 
 end
@@ -314,11 +331,11 @@ redirect '/'
 end
 
 # This Is FInd Page By post
-
 post '/find' do
 email=params[:email]
-user=User.all(:email=>email)
+user=User.all(:email=>email).first
 if user
+	user=User.all(:email=>email)
 	erb :find, locals:{:user=>user}
 else
 	redirect '/'
