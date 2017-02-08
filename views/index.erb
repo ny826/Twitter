@@ -12,7 +12,7 @@
 </div>
 
 <form action="find" method="post"> 
-	<input type="text" name="email">
+	<input type="text" name="email" placeholder="enter email here">
 	<input type="submit" name="submit" value="find">
 </form>
 <ul>
@@ -82,18 +82,34 @@
 <% end -%>
 </ol> -->
 <!-- <hr>  -->
-<h1>Follower List</h1><ol>
+<h1>Following List</h1><ol>
 <% if searate%>
 <%searate.each do |searate|%>
 <%user=User.all(:id=>searate.follower_id).first%>
 <li><%= user.name%></li>
 <% end -%>
 <%end%>
-
 </ol>
-<% if follow%>
-<h1><%= "Total followers #{follow.count}"%></h1>
+<hr>
+
+<!--<% if follow%>
+<h1><%= "Total following #{follow.count}"%></h1>
+<%end%>-->
+
+<ol>
+<h1>Follower List</h1>
+<%searate=Searate.all(:follower_id=>session[:user_id])%>
+<% if searate%>
+<%searate.each do |searate|%>
+<%user=User.all(:id=>searate.followee_id).first%>
+<li><%= user.name%></li>
 <%end%>
+<%end%>
+</ol>
+
+
+
+
 <style>
 body{
     background-color: grey;
